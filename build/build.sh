@@ -31,6 +31,8 @@ fi
 
 cd "$workspace/$WORKDIR"
 
+# INPUT and ARGS are split on purpose: several manuscript files, globs and options can be passed
+# shellcheck disable=SC2086
 docker run --rm -v "$workspace:/data" -v "$data:/opt/pandoc-template:ro" -w "/data/$WORKDIR" \
   "$IMAGE" \
-  --data-dir=/opt/pandoc-template -d "$DEFAULTS" "$INPUT" -o "$OUTPUT" ${ARGS:-}
+  --data-dir=/opt/pandoc-template -d "$DEFAULTS" $INPUT -o "$OUTPUT" ${ARGS:-}

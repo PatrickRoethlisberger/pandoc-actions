@@ -17,7 +17,7 @@ inputs:
     description: Docker image that runs Pandoc
     default: pandoc/latex:3.7.0.2-ubuntu
   input:
-    description: Manuscript file, relative to the working directory
+    description: Manuscript file, relative to the working directory; several files (space-separated, globs allowed, e.g. "meta.md chapters/*.md") are joined in the order given. Names must not contain spaces
     default: thesis.md
   output:
     description: PDF file to write, relative to the working directory

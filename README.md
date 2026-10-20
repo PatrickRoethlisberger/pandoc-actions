@@ -30,10 +30,17 @@ Builds the manuscript in a Pandoc image. The data directory is the template's `p
 | `data-dir` | Pandoc data directory in your repository, relative to its root, for a local template or a submodule. Use this or `template` | – |
 | `token` | Token to fetch a private template repository; not needed for public ones | – |
 | `image` | Docker image that runs Pandoc, for a template that needs more LaTeX packages or fonts | `pandoc/latex:3.7.0.2-ubuntu` |
-| `input` | Manuscript, relative to `working-directory` | `thesis.md` |
+| `input` | Manuscript, relative to `working-directory`; one or more files | `thesis.md` |
 | `output` | PDF to write, relative to `working-directory` | `thesis.pdf` |
 | `working-directory` | Where Pandoc runs, relative to the repository root; images, bibliography and diagrams are found from here | `.` |
 | `args` | Extra Pandoc options, e.g. `--pdf-engine-opt=-pdflatex=lualatex` | – |
+
+A manuscript can be split over several files: list them space-separated, or use a glob, and Pandoc joins them in the order given (a glob expands alphabetically, so number the files). Put the YAML metadata in the first file; with several headers the earlier one wins on conflicts. Names must not contain spaces.
+
+```yaml
+with:
+  input: 00-meta.md chapters/*.md
+```
 
 The template is fetched outside the workspace, so none of it ends up in your checkout. The ref is the template version: pin it (`@v1`) in your workflow.
 
