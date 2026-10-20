@@ -1,0 +1,45 @@
+name: Build Pandoc project
+description: Builds a Markdown manuscript into a PDF with a Pandoc template, in an existing Pandoc image. Needs a Linux runner with Docker. Diagrams are not exported here, see the drawio action.
+inputs:
+  defaults:
+    description: Name of the defaults file in the template, passed to Pandoc as "-d <name>"
+    required: true
+  template:
+    description: Template repository as "owner/repo" or "owner/repo@ref" (tag, branch or SHA; default branch if omitted). Its "pandoc/" folder is used as the Pandoc data directory. Use this or data-dir
+    default: ""
+  data-dir:
+    description: Pandoc data directory in this repository, relative to the repository root, for a local template or a submodule. Use this or template
+    default: ""
+  token:
+    description: Token for fetching a private template repository; not needed for public ones
+    default: ""
+  image:
+    description: Docker image that runs Pandoc
+    default: pandoc/latex:3.7.0.2-ubuntu
+  input:
+    description: Manuscript file, relative to the working directory
+    default: thesis.md
+  output:
+    description: PDF file to write, relative to the working directory
+    default: thesis.pdf
+  working-directory:
+    description: Directory to run Pandoc in, relative to the repository root; images, bibliography and diagrams are found from here
+    default: .
+  args:
+    description: Extra Pandoc options, for example "--pdf-engine-opt=-pdflatex=lualatex"
+    default: ""
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/build.sh
+      shell: bash
+      env:
+        DEFAULTS: ${{ inputs.defaults }}
+        TEMPLATE: ${{ inputs.template }}
+        DATA_DIR: ${{ inputs.data-dir }}
+        TOKEN: ${{ inputs.token }}
+        IMAGE: ${{ inputs.image }}
+        INPUT: ${{ inputs.input }}
+        OUTPUT: ${{ inputs.output }}
+        WORKDIR: ${{ inputs.working-directory }}
+        ARGS: ${{ inputs.args }}

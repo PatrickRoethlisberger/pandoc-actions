@@ -1,0 +1,13 @@
+name: Export draw.io diagrams
+description: Exports every page of every .drawio file below the working directory to a cropped PDF beside it (name.pdf, name-page2.pdf, ...). Needs a Linux runner with Docker.
+inputs:
+  working-directory:
+    description: Directory to search for diagrams, relative to the repository root
+    default: .
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/export.sh
+      shell: bash
+      env:
+        WORKDIR: ${{ inputs.working-directory }}
